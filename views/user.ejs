@@ -186,7 +186,7 @@
         showLoading();
         getUserCoordinates()
             .then((coordinates) => {
-                const url = `http://localhost:8080/api/coordinates?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
+                const url = `api/coordinates?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
                 fetch(url)
                     .then((response) => response.json())
                     .then((responseData) => {
