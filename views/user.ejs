@@ -186,7 +186,7 @@
         showLoading();
         getUserCoordinates()
             .then((coordinates) => {
-                const url = `api/coordinates?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
+                const url = `https://app-dde09d32-460e-4c5b-b9be-cd73c0412245.cleverapps.io/api/coordinates?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
                 fetch(url)
                     .then((response) => response.json())
                     .then((responseData) => {
