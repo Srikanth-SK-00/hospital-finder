@@ -186,11 +186,11 @@
         showLoading();
         getUserCoordinates()
             .then((coordinates) => {
-<<<<<<< HEAD
-                const url = `http://loca8080/api/coordinates?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
-=======
+
+     
+
                 const url = `https://app-dde09d32-460e-4c5b-b9be-cd73c0412245.cleverapps.io/api/coordinates?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
->>>>>>> 4bf99737ebc3ea47dc31a0a78a5e3d97ecc76b05
+
                 fetch(url)
                     .then((response) => response.json())
                     .then((responseData) => {
