@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- <link rel="stylesheet" href="login.css"> -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <title>User Login</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        *::selection {
+            background: var(--main-color);
+            color: #fff;
+        }
+
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100%;
+            background: rgb(0, 0, 0);
+            background-image: url(assert/usignup.jpg);
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .lower-box {
+            position: relative;
+            width: 400px;
+            height: 450px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: animate 3s ease-out;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #ffffffea;
+            text-align: center;
+        }
+
+        .input-box {
+            position: relative;
+            margin: 30px 0;
+            width: 310px;
+            border-bottom: 2px solid #ffffffea;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            color: #ffffffea;
+            font-size: 1em;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        input:focus~label,
+        input:valid~label {
+            top: -5px;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 50px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            padding: 0 35px 0 5px;
+            color: rgb(255, 255, 255);
+        }
+
+        .input-box ion-icon {
+            position: absolute;
+            right: 8px;
+            color: rgba(0, 0, 0, 0.747);
+            font-size: 1.2em;
+            top: 20px;
+        }
+
+        .forget {
+            margin: -15px 0 15px;
+            font-size: .9em;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            background: #ffffffea;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <div class="lower-box">
+                <div class="form-value">
+                    <form action="/login" method="POST">
+                        <h2>User Login</h2>
+                        <div class="input-box">
+                            <ion-icon name="mail-outline"></ion-icon>
+                            <input type="text" name="email" id="mobilenumber" required>
+                            <label for="">Email</label>
+                        </div>
+                        <div class="input-box">
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                            <input name="password" type="password" id="password" required>
+                            <label for="">Password</label>
+                            <span class="toggle-password" id="password-icon" onclick="togglePasswordVisibility()">
+                            </span>
+                        </div>
+                        <div class="forget">
+                            <a href="/forget"><span>Forgot Password</span></a>
+                        </div>
+                        <button>Login</button>
+                        <div class="signup-link">
+                            <br>
+                            <p><span style="color:#0f3193">Do you have an account?</span> <a href="/signup"><span
+                                        style="color:#52294f;font-weight:800">Sign Up</span></a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById("password");
+            var passwordIcon = document.getElementById("password-icon");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                passwordIcon.innerHTML = '<i class="material-icons">visibility</i>';
+            } else {
+                passwordInput.type = "password";
+                passwordIcon.innerHTML = '<i class="material-icons">visibility_off</i>';
+            }
+        }
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

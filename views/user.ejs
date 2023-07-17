@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #f2f2f2;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            margin-left: -1200px;
+        }
+
+        #profile {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            text-align: center;
+            color: black;
+        }
+
+        #hospitalList {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px;
+            color: black;
+
+        }
+
+        #hospitalList li {
+            color: black;
+            margin-bottom: 10px;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            color: white;
+            font-size: 24px;
+
+            padding-top: 50%;
+        }
+
+        .search-bar {
+            margin-top: 25px;
+            width: 100%;
+            max-width: 500px;
+            background-color: azure;
+            display: flex;
+            align-items: center;
+            border-radius: 60px;
+            max-height: 40px;
+            margin-right: -200 px;
+        }
+
+        .search-bar input {
+            background: transparent;
+            flex: 1;
+            border: 0;
+            outline: none;
+            padding: 24px 20px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .sea {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-bar button img {
+            width: 20px;
+        }
+
+        .search-bar button {
+            border: 0;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            background-color: #58629b;
+            cursor: pointer;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Hospital Finder</h1>
+        <div id="profile">
+            <h2><a href="/profile/<%= email %>">profile</a></h2>
+        </div>
+        <div class="sea">
+            <div class="search-bar">
+                <input type="text" placeholder="Search.." name="query" id="searchInput" />
+                <button type="submit" class="search-btn" id="searchBtn">
+                    <img src="/assert/search.png" />
+                </button>
+            </div>
+        </div>
+    </header>
+    <div id="loading">Loading...</div>
+    <ul id="hospitalList"></ul>
+    <script>
+        function filterHospitals(query) {
+            const list = document.getElementById('hospitalList');
+            const items = list.getElementsByTagName('li');
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const hospitalName = item.textContent.toLowerCase();
+                if (hospitalName.includes(query.toLowerCase())) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+        }
+        document.getElementById('searchBtn').addEventListener('click', function () {
+            const query = document.getElementById('searchInput').value;
+            filterHospitals(query);
+        });
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        function getUserCoordinates() {
+            return new Promise((resolve, reject) => {
+                if ('geolocation' in navigator) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const latitude = position.coords.latitude;
+                            const longitude = position.coords.longitude;
+                            resolve({ latitude, longitude });
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+                } else {
+                    reject(new Error('Geolocation is not supported by this browser.'));
+                }
+            });
+        }
+        function displayHospitals(hospitals) {
+            const list = document.getElementById('hospitalList');
+            hospitals.forEach((hospital) => {
+                if (hospital.tags.name) {
+                    const item = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = `https://www.google.com/search?q=${hospital.tags.name}&rlz=1C1GCEA_enIN990IN990&oq=&gs_lcrp=EgZjaHJvbWUqCQgAEEUYOxjCAzIJCAAQRRg7GMIDMgkIARBFGDsYwgMyCQgCEEUYOxjCAzIJCAMQRRg7GMIDMgkIBBBFGDsYwgMyCQgFEEUYOxjCAzIJCAYQRRg7GMIDMgkIBxBFGDsYwgPSAQ4yNTEzMTYwMTNqMGoxNagCCLACAQ&sourceid=chrome&ie=UTF-8`;
+                    link.textContent = hospital.tags.name;
+                    link.target = "_blank";
+                    item.appendChild(link);
+                    list.appendChild(item);
+                }
+            });
+        }
+        showLoading();
+        getUserCoordinates()
+            .then((coordinates) => {
+                const url = `http://localhost:8080/api/coordinates?latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`;
+                fetch(url)
+                    .then((response) => response.json())
+                    .then((responseData) => {
+                        hideLoading();
+                        displayHospitals(responseData);
+                        console.log('Backend response:', responseData);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            })
+            .catch((error) => {
+                console.error('Error retrieving user coordinates:', error);
+            });
+    </script>
+</body>
+
+</html>

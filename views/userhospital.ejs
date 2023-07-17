@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nearby Hospitals</title>
+</head>
+
+<body>
+    <h1>Nearby Hospitals</h1>
+    <p>Address: <%= address %>
+    </p>
+    <ul>
+        <% hospitals.forEach(function(hospital) { %>
+            <li>
+                <p>Name: <%= hospital.tags.name %>
+                </p>
+                <p>Latitude: <%= hospital.lat %>
+                </p>
+                <p>Longitude: <%= hospital.lon %>
+                </p>
+            </li>
+            <% }); %>
+    </ul>
+</body>
+<script>
+    console.log("wefbefv")
+</script>
+
+</html>
